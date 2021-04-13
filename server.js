@@ -2,21 +2,13 @@ const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 //const cors = require('cors');
 const app = express();
-//const db = require('./db')
+const db = require('./db')
 //import { v4 as uuidv4 } from 'uuid';
 
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 //app.use(cors());
-
-const db = [
-  { id: 1, author: 'John Doe', text: 'This company is worth every coin!' },
-  { id: 2, author: 'Amanda Doe', text: 'They really know how to make you happy.' },
-  { id: 3, author: 'Genowefa Doe', text: 'This is what I call luck.' },
-  { id: 4, author: 'Arnold Doe', text: 'Where the hell are we?' },
-  { id: 5, author: 'Xeno Doe', text: 'What ever...' },
-];
 
 const message = { message: 'OK!' };
 
@@ -25,21 +17,23 @@ const v4options = {
 };
 
 app.get('/', (req, res) => {
-  res.json(db);
+  res.json(db.testimonials);
 });
 
 app.get('/testimonials', (req, res) => {
-  res.json(db);
+  res.json(db.testimonials);
+});
+
+app.get('/testimonials/random', (req, res) => {
+  const random = db.testimonials[Math.floor(Math.random() * db.testimonials.length)];
+  res.json(random);
 });
 
 app.get('/testimonials/:id', (req, res) => {
-  res.json(db[`${req.params.id}`-1]);
+  res.json(db.testimonials[`${req.params.id}`-1]);
 });
 
-app.get('/random', (req, res) => {
-  const random = db[Math.floor(Math.random() * db.length)];
-  res.json(random);
-});
+
 
 app.post('/testimonials', (req, res) => {
   const { author, text, id} = req.body;
@@ -49,7 +43,7 @@ app.post('/testimonials', (req, res) => {
     text: req.body.text
   };
   
-  db.push(addRecord)
+  db.testimonials.push(addRecord)
   res.json(message);
 });
 
@@ -62,7 +56,7 @@ app.put('/testimonials/:id', (req, res) => {
 });
 
 app.delete('/testimonials/:id', (req, res) => {
-  db.splice(`${req.params.id}`-1, 1);
+  db.testimonials.splice(`${req.params.id}`-1, 1);
   res.json(message);
 });
 
