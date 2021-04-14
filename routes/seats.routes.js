@@ -29,8 +29,15 @@ router.route('/seats').post((req, res) => {
     email: req.body.email,
   };
   
-  db.seats.push(addRecord)
-  res.json(message);
+  const isBusy = db.seats.some((item) => {
+    return item.day == addRecord.day && item.seat == addRecord.seat;
+  });
+  if(!isBusy) {
+    db.seats.push(addRecord) 
+    res.json(message);
+  } else {
+    res.status(409).json({ message: "The slot is already taken..." });
+  };
 });
   
 router.route('/seats/:id').put((req, res) => {

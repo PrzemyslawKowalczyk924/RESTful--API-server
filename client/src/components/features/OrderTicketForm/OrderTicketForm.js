@@ -15,6 +15,12 @@ class OrderTicketForm extends React.Component {
     },
     isError: false,
   }
+  intervalId = null;
+  
+
+  componentDidMount = () => {
+    this.intervalId = setInterval(this.props.loadSeats, 120000); 
+  }
 
   updateSeat = (e, seatId) => {
     const { order } = this.state;
@@ -54,6 +60,7 @@ class OrderTicketForm extends React.Component {
         },
         isError: false,
       });
+
     } else {
       this.setState({ isError: true });
     }
@@ -108,6 +115,10 @@ class OrderTicketForm extends React.Component {
       </Form>
     )
   };
+
+  componentWillUnmount = () => {
+    clearInterval(this.intervalId);
+  }
 }
 
 export default OrderTicketForm;
