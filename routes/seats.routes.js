@@ -20,7 +20,7 @@ router.route('/seats/:id').get((req, res) => {
 });
   
 router.route('/seats').post((req, res) => {
-  const { id, day, seat, client, email } = req.body;
+  //const { id, day, seat, client, email } = req.body;
   const addRecord = {
     id: uuidv4(),
     day: req.body.day,
@@ -35,6 +35,7 @@ router.route('/seats').post((req, res) => {
   if(!isBusy) {
     db.seats.push(addRecord) 
     res.json(message);
+    req.io.emit('seatsUpdated', db.seats);
   } else {
     res.status(409).json({ message: "The slot is already taken..." });
   };

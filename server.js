@@ -9,6 +9,12 @@ const testimonialsRoutes = require('./routes/testimonials.routes');
 const concertRoutes = require('./routes/concerts.routes');
 const seatsRoutes = require('./routes/seats.routes');
 
+// middleware that add allow you to use ".io" -> "req.io" param in other files
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, '/client/build')));
 
