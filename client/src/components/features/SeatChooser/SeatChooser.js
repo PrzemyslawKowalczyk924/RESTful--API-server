@@ -3,7 +3,6 @@ import io from 'socket.io-client';
 import { Button, Progress, Alert } from 'reactstrap';
 
 import './SeatChooser.scss';
-//import { seats } from '../../../../../db';
 
 class SeatChooser extends React.Component {
   

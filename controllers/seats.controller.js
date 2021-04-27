@@ -35,8 +35,8 @@ exports.getId = async (req, res) => {
 
 exports.getNew = async (req, res) => {
   try {
-    const { id, day, seat, client, email } = req.body;
-    const newSeat = new Seat({ id: id, day: day, seat: seat, client: client, email: email });
+    const { day, seat, client, email } = req.body;
+    const newSeat = new Seat({ day: day, seat: seat, client: client, email: email });
     await newSeat.save();
     res.json({ message: 'OK' });
   } 
@@ -46,12 +46,12 @@ exports.getNew = async (req, res) => {
 };
 
 exports.getUpdate = async (req, res) => {
-  const { id, day, seat, client, email } = req.body;
+  const { day, seat, client, email } = req.body;
 
   try {
     const dep = await(Seat.findById(req.params.id));
     if(dep) {
-      await Seat.updateOne({ _id: req.params.id }, { $set: { id: id, day: day, seat: seat, client: client, email: email } });
+      await Seat.updateOne({ _id: req.params.id }, { $set: { day: day, seat: seat, client: client, email: email } });
       const updatedDep = await Seat.findById(req.params.id);
       res.json({ message: 'OK', updated: updatedDep });
     }

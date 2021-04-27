@@ -28,7 +28,6 @@ app.use('/api', testimonialsRoutes);
 app.use('/api', concertRoutes);
 app.use('/api', seatsRoutes);
 
-
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '/client/build/index.html'));
 });
@@ -38,9 +37,18 @@ app.use((req, res) => {
 });
 
 // connects our backend code with the database
-const uri = "mongodb+srv://Przemek:ddqyCj7wgVHURKn@cluster0.ikrzt.mongodb.net/NewWaveDB?retryWrites=true&w=majority";
+const uri = (envType) => {
+  switch(envType) {
+    case "production":
+      return "mongodb+srv://${process.env.userName}:${process.env.newWaveApp}@cluster0.ikrzt.mongodb.net/NewWaveDB?retryWrites=true&w=majority";
+    case "test":
+      return "mongodb://localhost:27017/NewWaveDBTest";
+    default:
+      return "mongodb://localhost:27017/NewWaveDB";  
+  }
+} 
 
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(uri(process.env.NODE_ENV), { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 
 db.once('open', () => {
@@ -56,5 +64,4 @@ const io = socket(server);
 
 io.on('connection', (socket) => {
   console.log('New client! Its id = ' + socket.id);
-
 });
