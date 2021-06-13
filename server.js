@@ -67,3 +67,5 @@ const io = socket(server);
 io.on('connection', (socket) => {
   console.log('New client! Its id = ' + socket.id);
 });
+
+module.exports = server;
